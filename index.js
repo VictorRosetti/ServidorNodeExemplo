@@ -48,5 +48,30 @@ app.get("/tudo", function (req, res) {
     res.send(rows);
   });
 });
+app.post("/criarUsuario", function(req,res){
+  var nome = req.body.nome;
+  var cpf = req.body.cpf;
+  sqlBusca = `SELECT * FROM users WHERE cpf=${cpf}`;
+  db.all(sqlBusca, [], (err,rows)=>{
+    if(err){
+      res.send("Erro na busca: "+err);
+    }else
+    {
+      if(rows.lengh>0)
+      {
+        res.send("Usuário já existe!");
+      }else{
+        sqlInsert = `INSERT INTO users (nome,cpf) VALUES ("${nome}",${cpf})`;
+        db.all(sqlInsert, [], (err, rows)=>{
+          if(err){
+            res.send("Erro na gravação do banco: "+err);
+          }else{
+            res.send("Usuário cadastrado!");
+          }
+        });
+      }
+    }
+  });
+});
 
 app.listen(port);

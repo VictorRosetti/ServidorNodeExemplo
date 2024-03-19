@@ -74,4 +74,30 @@ app.post("/criarUsuario", function(req,res){
   });
 });
 
+//Aula 3 - Update e Delete
+app.put("/atualizarUsuario", function (req, res) {
+  var nome = req.body.nome;
+  var cpf = req.body.cpf;
+  sql = `UPDATE users SET nome="${nome}", cpf=${cpf} WHERE cpf=${cpf}`;
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      res.send("Erro na atualizaçao: " + err);
+    } else {
+      res.send("Usuario atualizado!");
+    }
+  });
+});
+
+app.delete("/deletarUsuario", function (req, res) {
+  var cpf = req.body.cpf;
+  sql = `DELETE FROM users WHERE cpf=${cpf}`;
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      res.send("Erro na exclusão: " + err);
+    } else {
+      res.send("Usuário excluído!");
+    }
+  });
+});
+
 app.listen(port);
